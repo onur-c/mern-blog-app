@@ -13,5 +13,3 @@ app.post("/register", (req, res) => {
 });
 
 app.listen(PORT);
-
-// mongodb+srv://onurccelik1-mern-blog-app:2xcCwcfwxQwFW2LB@cluster0.4ydupvi.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0
