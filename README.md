@@ -35,5 +35,5 @@ npm run build
 ```
 ### Lastly run in root directory
 ```
-npm run build
+npm run dev
 ```
