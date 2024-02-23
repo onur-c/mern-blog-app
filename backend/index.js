@@ -15,11 +15,11 @@ import UserModel from "./models/User.js";
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-const PORT = 4000;
+const PORT = process.env.PORT || 4000;
 const app = express();
 const salt = bcrypt.genSaltSync();
 const jwtSecret = process.env.JWT_SECRET;
-const uploadMiddleware = multer({ dest: "uploads/" });
+const uploadMiddleware = multer({ dest: "backend/uploads/" });
 
 app.use(
   cors({
@@ -31,7 +31,7 @@ app.use(express.json());
 app.use(cookieParser());
 app.use("/uploads", express.static(__dirname + "/uploads"));
 
-mongoose.connect(process.env.MONGO_SECRET);
+app.use(express.static(path.join(path.resolve(), "/frontend/dist")));
 
 app.post("/register", async (req, res) => {
   const { username, password } = req.body;
@@ -90,6 +90,7 @@ app.post(
       const fileParts = originalname.split(".");
       const fileType = fileParts[fileParts.length - 1];
       const newPath = path + "." + fileType;
+      console.log(newPath);
       fs.renameSync(path, newPath);
       const { token } = req.cookies;
       jwt.verify(token, jwtSecret, {}, async (err, info) => {
@@ -104,7 +105,7 @@ app.post(
           title,
           description,
           content,
-          image: newPath,
+          image: newPath.split("backend\\").pop(),
         });
         res.status(200).json(post);
       });
@@ -159,18 +160,13 @@ app.put("/post", uploadMiddleware.single("uploadedImg"), async (req, res) => {
     });
 
     res.json(post);
-
-    // const post = await PostModel.create({
-    //   author,
-    //   title,
-    //   description,
-    //   content,
-    //   image: newPath,
-    // });
-    // res.status(200).json(post);
   });
 });
+// app.get("*", (req, res) => {
+//   res.sendFile(path.join(path.resolve(), "frontend", "dist", "index.html"));
+// });
 
 app.listen(PORT, () => {
   console.log("Server is running on port " + PORT);
+  mongoose.connect(process.env.MONGO_SECRET);
 });
