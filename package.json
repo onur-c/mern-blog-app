@@ -12,7 +12,7 @@
   },
   "scripts": {
     "dev": "nodemon backend/index.js",
-    "build": "pnpm install && pnpm install pnpm--prefix frontend && pnpm run build pnpm--prefix frontend",
+    "build": "npm install && npm install --prefix frontend && npm run build --prefix frontend",
     "start": "node backend/index.js"
   },
   "type": "module",
