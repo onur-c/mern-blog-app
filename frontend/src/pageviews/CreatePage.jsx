@@ -63,7 +63,7 @@ const CreatePage = () => {
     formData.set("uploadedImg", uploadedImg);
     formData.set("content", content);
 
-    const res = await fetch("/create", {
+    const res = await fetch("/api/create", {
       method: "POST",
       body: formData,
     });

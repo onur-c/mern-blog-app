@@ -19,7 +19,7 @@ const LoginPage = () => {
 
     if (username.length >= 4 && password.length >= 4) {
       setError("");
-      const res = await fetch("/login", {
+      const res = await fetch("/api/login", {
         method: "POST",
         body: JSON.stringify({ username, password }),
         headers: {

@@ -33,7 +33,7 @@ app.use("/uploads", express.static(__dirname + "/uploads"));
 
 app.use(express.static(path.join(path.resolve(), "/frontend/dist")));
 
-app.post("/register", async (req, res) => {
+app.post("/api/register", async (req, res) => {
   const { username, password } = req.body;
 
   try {
@@ -47,7 +47,7 @@ app.post("/register", async (req, res) => {
   }
 });
 
-app.post("/login", async (req, res) => {
+app.post("/api/login", async (req, res) => {
   const { username, password } = req.body;
 
   try {
@@ -67,7 +67,7 @@ app.post("/login", async (req, res) => {
   }
 });
 
-app.get("/profile", async (req, res) => {
+app.get("/api/profile", async (req, res) => {
   const { token } = req.cookies;
   if (token) {
     jwt.verify(token, jwtSecret, {}, (error, info) => {
@@ -77,12 +77,12 @@ app.get("/profile", async (req, res) => {
   }
 });
 
-app.post("/logout", (req, res) => {
+app.post("/api/logout", (req, res) => {
   res.cookie("token", "").json("ok");
 });
 
 app.post(
-  "/create",
+  "/api/create",
   uploadMiddleware.single("uploadedImg"),
   async (req, res) => {
     try {
@@ -114,12 +114,12 @@ app.post(
   }
 );
 
-app.get("/posts", async (req, res) => {
+app.get("/api/posts", async (req, res) => {
   const posts = await PostModel.find().sort({ createdAt: -1 }).limit(20);
   res.status(200).json(posts);
 });
 
-app.get("/post/:id", async (req, res) => {
+app.get("/api/post/:id", async (req, res) => {
   const { id } = req.params;
   try {
     const post = await PostModel.findById(id);
@@ -129,41 +129,46 @@ app.get("/post/:id", async (req, res) => {
   }
 });
 
-app.put("/post", uploadMiddleware.single("uploadedImg"), async (req, res) => {
-  const { originalname, path } = req.file;
-  const fileParts = originalname.split(".");
-  const fileType = fileParts[fileParts.length - 1];
-  const newPath = path + "." + fileType;
-  fs.renameSync(path, newPath);
-  const { token } = req.cookies;
+app.put(
+  "/api/post",
+  uploadMiddleware.single("uploadedImg"),
+  async (req, res) => {
+    const { originalname, path } = req.file;
+    const fileParts = originalname.split(".");
+    const fileType = fileParts[fileParts.length - 1];
+    const newPath = path + "." + fileType;
+    fs.renameSync(path, newPath);
+    const { token } = req.cookies;
 
-  jwt.verify(token, jwtSecret, {}, async (err, info) => {
-    if (err) throw new Error("Invalid token.");
+    jwt.verify(token, jwtSecret, {}, async (err, info) => {
+      if (err) throw new Error("Invalid token.");
 
-    const { author, title, description, content } = req.body;
-    if (!content) {
-      throw new Error("Content is missing");
-    }
+      const { author, title, description, content } = req.body;
+      if (!content) {
+        throw new Error("Content is missing");
+      }
 
-    const post = await PostModel.findOne({ author });
+      const post = await PostModel.findOne({ author });
 
-    const isAuthor = post.author === info.username;
+      const isAuthor = post.author === info.username;
 
-    if (!isAuthor) res.status(400).json("Wrong credentials. Not the author.");
+      if (!isAuthor) res.status(400).json("Wrong credentials. Not the author.");
 
-    await post.updateOne({
-      title,
-      description,
-      content,
-      image: newPath ? newPath : post.image,
+      await post.updateOne({
+        title,
+        description,
+        content,
+        image: newPath ? newPath.split("backend\\").pop() : post.image,
+      });
+
+      res.json(post);
     });
+  }
+);
 
-    res.json(post);
-  });
+app.get("*", (req, res) => {
+  res.sendFile(path.join(path.resolve(), "frontend", "dist", "index.html"));
 });
-// app.get("*", (req, res) => {
-//   res.sendFile(path.join(path.resolve(), "frontend", "dist", "index.html"));
-// });
 
 app.listen(PORT, () => {
   console.log("Server is running on port " + PORT);
