@@ -36,7 +36,7 @@ const LoginPage = () => {
         await delay(1000);
         navigate("/");
       } else if (res.status == 400) {
-        setError("Wrond credentials.");
+        setError(await res.json());
         return;
       }
     } else {

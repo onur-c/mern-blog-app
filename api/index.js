@@ -53,6 +53,7 @@ app.post("/login", async (req, res) => {
   try {
     const user = await UserModel.findOne({ username });
     const passValid = bcrypt.compareSync(password, user.password);
+
     if (passValid) {
       jwt.sign({ username, id: user._id }, jwtSecret, {}, (error, token) => {
         if (error) throw new Error(error.message);
@@ -61,7 +62,9 @@ app.post("/login", async (req, res) => {
     } else {
       res.status(400).json("Wrong credentials.");
     }
-  } catch (error) {}
+  } catch (error) {
+    res.status(400).json("User does not exist.");
+  }
 });
 
 app.get("/profile", async (req, res) => {
