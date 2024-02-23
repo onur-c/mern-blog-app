@@ -5,6 +5,7 @@ import RegisterPage from "./pageviews/RegisterPage";
 import Layout from "./components/Layout";
 import CreatePage from "./pageviews/CreatePage";
 import PostPage from "./pageviews/PostPage";
+import EditPage from "./pageviews/EditPage";
 
 function App() {
   return (
@@ -16,6 +17,7 @@ function App() {
           <Route path={"/register"} element={<RegisterPage />} />
           <Route path={"/create"} element={<CreatePage />} />
           <Route path={"/post/:id"} element={<PostPage />} />
+          <Route path={"/edit/:id"} element={<EditPage />} />
         </Route>
       </Routes>
     </>

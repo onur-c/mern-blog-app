@@ -1,9 +1,7 @@
-import { useContext, useState } from "react";
+import { useEffect, useState } from "react";
 import ReactQuill from "react-quill";
-import "react-quill/dist/quill.snow.css";
 import Button from "../components/Button";
-import { useNavigate } from "react-router-dom";
-import { UserContext } from "../context/UserContext";
+import { useNavigate, useParams } from "react-router-dom";
 
 const modules = {
   toolbar: [
@@ -34,10 +32,22 @@ const formats = [
   "image",
 ];
 
-const CreatePage = () => {
+const EditPage = () => {
+  const { id } = useParams();
   const navigate = useNavigate();
 
-  const { userInfo } = useContext(UserContext);
+  useEffect(() => {
+    fetch(`http://localhost:4000/post/${id}`)
+      .then((res) => res.json())
+      .then((post) => {
+        setPost(post);
+        setTitle(post?.title);
+        setDescription(post?.description);
+        setContent(post?.content);
+      });
+  }, [id]);
+
+  const [post, setPost] = useState(null);
 
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
@@ -48,30 +58,27 @@ const CreatePage = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (content.length < 50) {
-      setError("Content must be over 50 characters");
-      return;
-    } else {
-      setError("");
-    }
 
     const formData = new FormData();
 
-    formData.set("author", userInfo.username);
+    formData.set("author", post.author);
     formData.set("title", title);
     formData.set("description", description);
-    formData.set("uploadedImg", uploadedImg);
+    if (uploadedImg) {
+      formData.set("uploadedImg", uploadedImg);
+    }
     formData.set("content", content);
 
-    const res = await fetch("http://localhost:4000/create", {
-      method: "POST",
+    const res = await fetch("http://localhost:4000/post", {
+      method: "PUT",
       body: formData,
+      credentials: "include",
     });
+
     if (res.status == 200) {
-      console.log(await res.json());
-      navigate("/");
+      navigate(`/post/${id}`);
     } else {
-      console.log(await res.json());
+      setError("An error occured during updating the article.");
     }
   };
 
@@ -80,7 +87,7 @@ const CreatePage = () => {
       className="flex flex-col m-auto gap-3 w-[300px] sm:w-[600px] lg:w-[920px]"
       onSubmit={handleSubmit}
     >
-      <h1 className="text-xl font-semibold">Create your article</h1>
+      <h1 className="text-xl font-semibold">Update your article</h1>
       <label className="flex flex-col gap-1">
         Title
         <input
@@ -142,9 +149,9 @@ const CreatePage = () => {
         />
       </div>
       <p className="text-sm font-bold text-red-600 opacity-70 ">{error}</p>
-      <Button variant={"primary"}>Create Article</Button>
+      <Button variant={"primary"}>Update Article</Button>
     </form>
   );
 };
 
-export default CreatePage;
+export default EditPage;
