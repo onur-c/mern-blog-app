@@ -3,7 +3,7 @@ Created with MongoDB, Express, React and Node.js
 
 ## Preview
   - You can register & login.
-  - You can create posts with title,description,image, and markdown content.
+  - You can create posts with title,description,image and markdown content.
   - You can edit your post.
 
 
