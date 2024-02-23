@@ -15,7 +15,7 @@ const RegisterPage = () => {
     e.preventDefault();
     if (username.length >= 4 && password.length >= 4) {
       setError("");
-      const res = await fetch("http://localhost:4000/register", {
+      const res = await fetch("/register", {
         method: "POST",
         body: JSON.stringify({ username, password }),
         headers: {

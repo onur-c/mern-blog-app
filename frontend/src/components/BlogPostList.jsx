@@ -4,7 +4,7 @@ import BlogPostCard from "./BlogPostCard";
 const BlogPostList = () => {
   const [posts, setPosts] = useState([]);
   useEffect(() => {
-    fetch("http://localhost:4000/posts")
+    fetch("/posts")
       .then((res) => res.json())
       .then((data) => setPosts(data));
   }, []);

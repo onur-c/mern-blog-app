@@ -6,7 +6,7 @@ const BlogPostCard = ({ post }) => {
       <div className="flex flex-wrap justify-center gap-8 p-4 rounded-md max-w-[600px] shadow-md hover:shadow-lg transition ">
         <div className="w-[250px] h-[250px]">
           <img
-            src={"http://localhost:4000/" + post.image}
+            src={"/" + post.image}
             alt="Photo of article"
             className="object-cover overflow-hidden rounded aspect-square"
           />

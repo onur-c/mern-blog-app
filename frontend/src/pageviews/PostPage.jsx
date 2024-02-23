@@ -9,7 +9,7 @@ const PostPage = () => {
   const [post, setPost] = useState(null);
   const { userInfo } = useContext(UserContext);
   useEffect(() => {
-    fetch(`http://localhost:4000/post/${id}`)
+    fetch(`/post/${id}`)
       .then((res) => {
         return res.json();
       })
@@ -40,7 +40,7 @@ const PostPage = () => {
             <p>{post.author}</p>
           </div>
           <img
-            src={`http://localhost:4000/${post.image}`}
+            src={`/${post.image}`}
             alt={post.title}
             className="object-cover"
           />

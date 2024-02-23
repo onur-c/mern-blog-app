@@ -63,7 +63,7 @@ const CreatePage = () => {
     formData.set("uploadedImg", uploadedImg);
     formData.set("content", content);
 
-    const res = await fetch("http://localhost:4000/create", {
+    const res = await fetch("/create", {
       method: "POST",
       body: formData,
     });

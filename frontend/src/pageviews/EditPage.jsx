@@ -37,7 +37,7 @@ const EditPage = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    fetch(`http://localhost:4000/post/${id}`)
+    fetch(`/post/${id}`)
       .then((res) => res.json())
       .then((post) => {
         setPost(post);
@@ -69,7 +69,7 @@ const EditPage = () => {
     }
     formData.set("content", content);
 
-    const res = await fetch("http://localhost:4000/post", {
+    const res = await fetch("/post", {
       method: "PUT",
       body: formData,
       credentials: "include",

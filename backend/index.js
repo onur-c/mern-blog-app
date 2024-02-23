@@ -90,7 +90,6 @@ app.post(
       const fileParts = originalname.split(".");
       const fileType = fileParts[fileParts.length - 1];
       const newPath = path + "." + fileType;
-      console.log(newPath);
       fs.renameSync(path, newPath);
       const { token } = req.cookies;
       jwt.verify(token, jwtSecret, {}, async (err, info) => {
