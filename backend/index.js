@@ -1,16 +1,16 @@
-import express from "express";
-import cors from "cors";
-import mongoose from "mongoose";
-import UserModel from "./models/User.js";
-import "dotenv/config.js";
 import bcrypt from "bcryptjs";
-import jwt from "jsonwebtoken";
 import cookieParser from "cookie-parser";
-import multer from "multer";
+import cors from "cors";
+import "dotenv/config.js";
+import express from "express";
 import fs from "fs";
-import PostModel from "./models/Post.js";
+import jwt from "jsonwebtoken";
+import mongoose from "mongoose";
+import multer from "multer";
 import path from "path";
 import { fileURLToPath } from "url";
+import PostModel from "./models/Post.js";
+import UserModel from "./models/User.js";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
