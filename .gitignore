@@ -8,9 +8,7 @@ pnpm-debug.log*
 lerna-debug.log*
 
 
-uploads/*.jpeg
-uploads/*.png
-uploads/*.webp
+backend/uploads/
 node_modules
 dist
 dist-ssr
