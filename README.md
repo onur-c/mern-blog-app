@@ -4,7 +4,7 @@ Created with MongoDB, Express, React and Node.js
 ## Preview
   - You can register & login.
   - You can create posts with title,description,image and markdown content.
-    - Note: images gets created at backend/uploads folder.
+    - Note: image uploads gets created at backend/uploads folder.
   - You can edit your post.
 
 
