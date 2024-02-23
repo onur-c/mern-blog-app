@@ -14,7 +14,7 @@
     "dev": "nodemon backend/index.js",
     "build": "npm install && npm install --prefix frontend && npm run build --prefix frontend",
     "start": "node backend/index.js",
-    "postbuild": "mv build ./public/"
+    "postbuild": "mv ./frontend/dist ./public/"
   },
   "type": "module",
   "name": "mern-app",
